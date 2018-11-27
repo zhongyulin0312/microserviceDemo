@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>user-server</artifactId>
+    <groupId>com.demo</groupId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>user-server</name>
+
+    <parent>
+        <groupId>com.demo</groupId>
+        <artifactId>microservice</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <build>
+        <finalName>user-server</finalName>
+        <!--执行${}占位符执行-->
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <configuration>
+                        <encoding>utf-8</encoding>
+                        <useDefaultDelimiters>true</useDefaultDelimiters>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <resources>
+            <resource>
+                <includes>
+                    <include>application.properties</include>
+                    <include>logback.xml</include>
+                </includes>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>false</filtering>
+            </testResource>
+        </testResources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+
+
+            <!-- 打包，指定main方法 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <useUniqueVersions>true</useUniqueVersions>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix></classpathPrefix>
+                            <mainClass>com.user.main.UserServerApplication</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <distributionManagement>
+                <repository>
+                    <id>snapshots</id>
+                    <url>http://172.80.2.55:8082/nexus/content/repositories/snapshots</url>
+                </repository>
+            </distributionManagement>
+            <properties>
+                <env>dev</env>
+
+                <eureka.client.url><![CDATA[http://localhost:7600/eureka/]]></eureka.client.url>
+
+                <mysql.url><![CDATA[jdbc:mysql://172.80.2.55:3306/ssoauth?useUnicode=true&autoReconnect=true&characterEncoding=UTF-8]]></mysql.url>
+                <mysql.username><![CDATA[root]]></mysql.username>
+                <mysql.password><![CDATA[123456]]></mysql.password>
+
+                <redis.host><![CDATA[172.80.2.55]]></redis.host>
+                <redis.port><![CDATA[6379]]></redis.port>
+                <redis.password><![CDATA[Redis123456]]></redis.password>
+
+                <publish.version>1.0.0-SNAPSHOT</publish.version>
+                <log4j.logLevel><![CDATA[INFO]]></log4j.logLevel>
+                <log4j.R.file><![CDATA[/Users/zhongyulin/opt/logs/user-server/user-server]]></log4j.R.file>
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <distributionManagement>
+                <repository>
+                    <id>snapshots</id>
+                    <url>http://172.80.2.55:8082/nexus/content/repositories/snapshots</url>
+                </repository>
+            </distributionManagement>
+            <properties>
+                <env>test</env>
+
+                <eureka.client.url><![CDATA[http://localhost:7600/eureka/]]></eureka.client.url>
+
+                <mysql.url><![CDATA[jdbc:mysql://172.80.2.55:3306/ssoauth?useUnicode=true&autoReconnect=true&characterEncoding=UTF-8]]></mysql.url>
+                <mysql.username><![CDATA[root]]></mysql.username>
+                <mysql.password><![CDATA[123456]]></mysql.password>
+
+                <redis.host><![CDATA[172.80.2.55]]></redis.host>
+                <redis.port><![CDATA[6379]]></redis.port>
+                <redis.password><![CDATA[Redis123456]]></redis.password>
+
+                <publish.version>1.0.0-SNAPSHOT</publish.version>
+                <log4j.bilinLevel><![CDATA[debug]]></log4j.bilinLevel>
+                <log4j.R.file><![CDATA[/opt/logs/user-server/user-server]]></log4j.R.file>
+            </properties>
+        </profile>
+
+
+        <profile>
+            <id>online</id>
+            <distributionManagement>
+                <repository>
+                    <id>releases</id>
+                    <url>http://172.80.2.55:8082/nexus/content/repositories/releases</url>
+                </repository>
+            </distributionManagement>
+            <properties>
+                <env>online</env>
+
+                <eureka.client.url><![CDATA[http://localhost:7600/eureka/]]></eureka.client.url>
+
+                <mysql.url><![CDATA[jdbc:mysql://172.80.2.55:3306/ssoauth?useUnicode=true&autoReconnect=true&characterEncoding=UTF-8]]></mysql.url>
+                <mysql.username><![CDATA[root]]></mysql.username>
+                <mysql.password><![CDATA[123456]]></mysql.password>
+
+                <redis.host><![CDATA[172.80.2.55]]></redis.host>
+                <redis.port><![CDATA[6379]]></redis.port>
+                <redis.password><![CDATA[Redis123456]]></redis.password>
+
+                <publish.version>1.0.0</publish.version>
+                <log4j.bilinLevel><![CDATA[error]]></log4j.bilinLevel>
+                <log4j.R.file><![CDATA[/opt/logs/user-server/user-server]]></log4j.R.file>
+            </properties>
+        </profile>
+    </profiles>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-eureka</artifactId>
+        </dependency>
+
+        <!--swagger-->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.7.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.7.0</version>
+        </dependency>
+
+        <!--基础工具包-->
+        <dependency>
+            <groupId>com.demo.lib</groupId>
+            <artifactId>common-sdk</artifactId>
+            <version>${publish.version}</version>
+        </dependency>
+
+        <!-- mysql驱动包 -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.30</version>
+        </dependency>
+
+        <!--mybatis-->
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>1.3.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.1.12</version>
+        </dependency>
+
+        <!--Redis-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <!--End-->
+
+        <!--hystrix-dashboard-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-hystrix-dashboard</artifactId>
+        </dependency>
+        <!--hystrix -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-hystrix</artifactId>
+        </dependency>
+
+        <!-- zipkin-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-zipkin</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+
+
+</project>

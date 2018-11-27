@@ -1,0 +1,11 @@
+/Users/zhongyulin/XWODA/microservice/user-server/src/main/java/com/user/lnterceptor/SwaggerConfig.java
+/Users/zhongyulin/XWODA/microservice/user-server/src/main/java/com/user/dao/mapper/UserMapper.java
+/Users/zhongyulin/XWODA/microservice/user-server/src/main/java/com/user/cached/IUserCached.java
+/Users/zhongyulin/XWODA/microservice/user-server/src/main/java/com/user/service/impl/UserServiceImpl.java
+/Users/zhongyulin/XWODA/microservice/user-server/src/main/java/com/user/dao/impl/UserDaoImpl.java
+/Users/zhongyulin/XWODA/microservice/user-server/src/main/java/com/user/model/User.java
+/Users/zhongyulin/XWODA/microservice/user-server/src/main/java/com/user/controller/UserController.java
+/Users/zhongyulin/XWODA/microservice/user-server/src/main/java/com/user/service/UserService.java
+/Users/zhongyulin/XWODA/microservice/user-server/src/main/java/com/user/dao/UserDao.java
+/Users/zhongyulin/XWODA/microservice/user-server/src/main/java/com/user/cached/impl/UserCachedImpl.java
+/Users/zhongyulin/XWODA/microservice/user-server/src/main/java/com/user/main/UserServerApplication.java

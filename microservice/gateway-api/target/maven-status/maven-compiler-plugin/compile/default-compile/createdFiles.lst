@@ -1,0 +1,3 @@
+com/gateway/main/Interceptor/ApiGatewayConfig.class
+com/gateway/main/GatewayServerApplication.class
+com/gateway/main/Interceptor/PermissionFilter.class

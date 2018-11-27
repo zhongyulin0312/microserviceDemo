@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>eureka-server</artifactId>
+    <groupId>com.demo</groupId>
+    <version>1.0-SNAPSHOT</version>
+
+    <name>eureka-server</name>
+
+   <parent>
+       <groupId>com.demo</groupId>
+       <artifactId>microservice</artifactId>
+       <version>1.0-SNAPSHOT</version>
+   </parent>
+
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <build>
+        <finalName>eureka-server</finalName>
+        <!--执行${}占位符执行-->
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <configuration>
+                        <encoding>utf-8</encoding>
+                        <useDefaultDelimiters>true</useDefaultDelimiters>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <resources>
+            <resource>
+                <includes>
+                    <include>application.properties</include>
+                    <include>logback.xml</include>
+                </includes>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>false</filtering>
+            </testResource>
+        </testResources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+
+
+            <!-- 打包，指定main方法 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <useUniqueVersions>true</useUniqueVersions>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix></classpathPrefix>
+                            <mainClass>com.eureka.main.EurekaServerApplication</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <distributionManagement>
+                <repository>
+                    <id>snapshots</id>
+                    <url>http://172.80.2.55:8082/nexus/content/repositories/snapshots</url>
+                </repository>
+            </distributionManagement>
+            <properties>
+                <env>dev</env>
+                <publish.version>1.0.0-SNAPSHOT</publish.version>
+
+
+                <log4j.bilinLevel><![CDATA[INFO]]></log4j.bilinLevel>
+                <log4j.R.file><![CDATA[/Users/zhongyulin/opt/logs/eureka-server/eureka-server]]></log4j.R.file>
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <distributionManagement>
+                <repository>
+                    <id>snapshots</id>
+                    <url>http://172.80.2.55:8082/nexus/content/repositories/snapshots</url>
+                </repository>
+            </distributionManagement>
+            <properties>
+                <env>test</env>
+                <publish.version>1.0.0-SNAPSHOT</publish.version>
+
+
+                <log4j.bilinLevel><![CDATA[debug]]></log4j.bilinLevel>
+                <log4j.R.file><![CDATA[/opt/logs/eureka-server/eureka-server.log]]></log4j.R.file>
+            </properties>
+        </profile>
+
+
+        <profile>
+            <id>online</id>
+            <distributionManagement>
+                <repository>
+                    <id>releases</id>
+                    <url>http://172.80.2.55:8082/nexus/content/repositories/releases</url>
+                </repository>
+            </distributionManagement>
+            <properties>
+                <env>online</env>
+                <publish.version>1.0.0</publish.version>
+                <log4j.bilinLevel><![CDATA[error]]></log4j.bilinLevel>
+                <log4j.R.file><![CDATA[/opt/logs/eureka-server/eureka-server.log]]></log4j.R.file>
+            </properties>
+        </profile>
+    </profiles>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-eureka-server</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+
+    </dependencies>
+
+
+</project>
